@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "dist-analysis"
+version = "0.1.0"
+description = ""
+authors = ["Dmitry Labazkin"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pandas = "^1.4.2"
+requests = "^2.27.1"
+tqdm = "^4.64.0"
+python-dateutil = "^2.8.2"
+
+[tool.poetry.dev-dependencies]
+jupyterlab = "^3.4.2"
+matplotlib-venn = "^0.11.7"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

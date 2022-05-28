@@ -1,0 +1,7 @@
+[style]
+based_on_style = google
+column_limit = 99
+split_before_logical_operator = true
+split_before_arithmetic_operator = true
+coalesce_brackets = false
+dedent_closing_brackets = true
