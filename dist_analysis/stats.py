@@ -20,7 +20,7 @@ def get_names_stats(
     possible_chars,
     required_chars=set(),
     round_decimals=5,
-    sample_size=5,
+    sample_size=3,
     random_state=42
 ):
     all_names_count = len(all_names)
