@@ -127,30 +127,29 @@ def plot_names_with_punctuation_upset(
     venn_counts_df = pd.concat([venn_counts_df['count'], subsets_df], axis=1)
     venn_counts = venn_counts_df.set_index(cols)['count']
 
-    plt.rcParams['font.size'] = 16
-    fig = plt.figure(figsize=(16, 8))
+    with plt.rc_context({'font.size': 16}):
+        fig = plt.figure(figsize=(16, 8))
 
-    upset = UpSet(
-        venn_counts,
-        element_size=None,
-        show_counts='%d',
-        show_percentages=True,
-        sort_by='cardinality'
-    )
-    upset.plot(fig=fig)
-    subsets_ax = fig.axes[2]
-    categories_ax = fig.axes[3]
-    subsets_ax.grid(None)
-    categories_ax.grid(None)
-    categories_colors = [
-        '#FF9999', '#9999FF', '#99CC99', '#E199E1', '#9999FF', '#E1BD99', '#000000'
-    ]
+        upset = UpSet(
+            venn_counts,
+            element_size=None,
+            show_counts='%d',
+            show_percentages=True,
+            sort_by='cardinality'
+        )
+        upset.plot(fig=fig)
+        subsets_ax = fig.axes[2]
+        categories_ax = fig.axes[3]
+        subsets_ax.grid(None)
+        categories_ax.grid(None)
+        categories_colors = [
+            '#FF9999', '#9999FF', '#99CC99', '#E199E1', '#9999FF', '#E1BD99', '#000000'
+        ]
 
-    for i, bar in enumerate(categories_ax.patches):
-        bar.set_color(categories_colors[i])
+        for i, bar in enumerate(categories_ax.patches):
+            bar.set_color(categories_colors[i])
 
-    if image_file_path:
-        plt.savefig(image_file_path, bbox_inches='tight')
+        if image_file_path:
+            plt.savefig(image_file_path, bbox_inches='tight')
 
-    plt.show()
-    plt.rcParams['font.size'] = plt.rcParamsDefault['font.size']
+        plt.show()
