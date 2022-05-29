@@ -11,10 +11,11 @@ pandas = "^1.4.2"
 requests = "^2.27.1"
 tqdm = "^4.64.0"
 python-dateutil = "^2.8.2"
+matplotlib-venn = "^0.11.7"
+upsetplot = {url = "https://github.com/jnothman/UpSetPlot/archive/master.zip"}
 
 [tool.poetry.dev-dependencies]
 jupyterlab = "^3.4.2"
-matplotlib-venn = "^0.11.7"
 flake8 = "^4.0.1"
 isort = "^5.10.1"
 yapf = "^0.32.0"

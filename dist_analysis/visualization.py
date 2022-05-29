@@ -1,9 +1,11 @@
 import matplotlib.pyplot as plt
 from matplotlib_venn import venn3, venn3_circles
 import numpy as np
+import pandas as pd
+from upsetplot import UpSet
 
 
-def plot_names_with_punctuation(
+def plot_names_with_punctuation_venn(
     names_with_hyphens, names_with_underscores, names_with_dots, image_file_path=None
 ):
     label_fontsize = 16
@@ -103,3 +105,52 @@ def plot_names_with_punctuation(
         plt.savefig(image_file_path, bbox_inches='tight')
 
     plt.show()
+
+
+def plot_names_with_punctuation_upset(
+    names_with_hyphens, names_with_underscores, names_with_dots, image_file_path=None
+):
+    venn_counts_map = {
+        '100': len(set(names_with_hyphens) - set(names_with_underscores) - set(names_with_dots)),
+        '010': len(set(names_with_underscores) - set(names_with_hyphens) - set(names_with_dots)),
+        '001': len(set(names_with_dots) - set(names_with_hyphens) - set(names_with_underscores)),
+        '110': len(set(names_with_hyphens) & set(names_with_underscores) - set(names_with_dots)),
+        '101': len(set(names_with_hyphens) & set(names_with_dots) - set(names_with_underscores)),
+        '011': len(set(names_with_underscores) & set(names_with_dots) - set(names_with_hyphens)),
+        '111': len(set(names_with_hyphens) & set(names_with_underscores) & set(names_with_dots))
+    }
+    cols = ['hyphens', 'underscores', 'dots']
+
+    venn_counts_df = pd.DataFrame(tuple(venn_counts_map.items()), columns=['subset', 'count'])
+    subsets_df = venn_counts_df['subset'].apply(lambda x: pd.Series(list(x)).astype(int))
+    subsets_df.columns = cols
+    venn_counts_df = pd.concat([venn_counts_df['count'], subsets_df], axis=1)
+    venn_counts = venn_counts_df.set_index(cols)['count']
+
+    plt.rcParams['font.size'] = 16
+    fig = plt.figure(figsize=(16, 8))
+
+    upset = UpSet(
+        venn_counts,
+        element_size=None,
+        show_counts='%d',
+        show_percentages=True,
+        sort_by='cardinality'
+    )
+    upset.plot(fig=fig)
+    subsets_ax = fig.axes[2]
+    categories_ax = fig.axes[3]
+    subsets_ax.grid(None)
+    categories_ax.grid(None)
+    categories_colors = [
+        '#FF9999', '#9999FF', '#99CC99', '#E199E1', '#9999FF', '#E1BD99', '#000000'
+    ]
+
+    for i, bar in enumerate(categories_ax.patches):
+        bar.set_color(categories_colors[i])
+
+    if image_file_path:
+        plt.savefig(image_file_path, bbox_inches='tight')
+
+    plt.show()
+    plt.rcParams['font.size'] = plt.rcParamsDefault['font.size']
