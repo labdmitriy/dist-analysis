@@ -1189,6 +1189,7 @@ pandas = ">=0.23"
 [package.source]
 type = "url"
 url = "https://github.com/jnothman/UpSetPlot/archive/master.zip"
+
 [[package]]
 name = "urllib3"
 version = "1.26.9"
